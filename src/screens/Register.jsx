@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../components/config/config'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
 
@@ -13,7 +13,7 @@ const Register = () => {
 
 
     // User Register Function
-    function SignUp(e) {
+    function userSignUp(e) {
         e.preventDefault()
 
         const email = emailRef.current.value
@@ -33,6 +33,9 @@ const Register = () => {
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log(user);
+                    emailRef.current.value = ""
+                    passwordRef.current.value = ""
+                    confPasswordRef.current.value = ""
                     navigate('/')
                 })
                 .catch((error) => {
@@ -48,13 +51,14 @@ const Register = () => {
 
     return (
         <>
-            {/* Login Form */}
+            {/* User SignUp Box */}
             <div className='flex justify-center mt-[-20px]'>
                 <div className="w-[45%] p-10 bg-white">
                     <h3 className="font-bold text-2xl"> Register </h3>
                     <p className="py-4 text-gray-700"> Please Register to add todo's </p>
 
-                    <form onSubmit={SignUp}>
+                    {/* SignUp Form */}
+                    <form onSubmit={userSignUp}>
                         <input type="email" ref={emailRef} className='w-full p-3 border-2  outline-none' placeholder='Enter Email' required />
                         <input type="password" ref={passwordRef} className='mt-2 w-full p-3 border-2  outline-none' placeholder='Enter Password' required />
                         <input type="password" ref={confPasswordRef} className='mt-2 w-full p-3 border-2  outline-none' placeholder='Enter Confirm Password' required />

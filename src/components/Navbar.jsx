@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import userIcon from '../assets/user-icon.png'
 
 const Navbar = () => {
     return (
@@ -8,7 +9,7 @@ const Navbar = () => {
             <nav id='hero' >
                 {/* Logo */}
                 < div >
-                    <h1 className="text-white text-[30px] font-bold"> <a href="./home.html"> myTodo </a> </h1>
+                    <h1 className="text-white text-[30px] font-bold"> <a href="/"> myTodo </a> </h1>
                 </div >
 
 
@@ -17,7 +18,7 @@ const Navbar = () => {
                         <div className="flex items-center">
                             <label tabIndex={"0"} className="btn btn-ghost btn-circle avatar">
                                 <div className="w-8 rounded-full border border-white">
-                                    <img src="" alt="profile-pic" />
+                                    <img src={userIcon} alt="profile-pic" />
                                 </div>
                             </label>
                             <p className="text-lg text-white font-medium">  </p>
