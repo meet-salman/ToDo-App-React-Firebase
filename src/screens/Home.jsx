@@ -1,10 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { auth } from '../components/config/config'
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
+
+    const navigate = useNavigate()
 
     const [text, setText] = useState("")
     const [todo, setTodo] = useState([])
 
+
+    useEffect(() => {
+        userLoginOrLogout()
+    }, [])
+
+    // Check Use Login or Logout
+    function userLoginOrLogout() {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                console.log(user);
+            } else {
+                navigate('login')
+            }
+        });
+    }
+
+    // Add Todo Function
     function addTodo(e) {
         e.preventDefault()
 
@@ -12,7 +36,7 @@ const Home = () => {
         setText("")
     }
 
-
+    // Edit Todo Function
     function editTodo(index) {
         const editedValue = prompt('Enter Edited Todo Value')
 
@@ -24,10 +48,9 @@ const Home = () => {
             alert("Please Enter a Value")
             editTodo(index)
         }
-
-
     }
 
+    // Dlt Todo Function
     function DltTodo(index) {
         todo.splice(index, 1)
         setTodo([...todo])
@@ -35,10 +58,10 @@ const Home = () => {
 
     return (
         <>
-
             {/* Todo Section Start */}
             <div>
 
+                {/* Todo Form Input */}
                 <div className='mt-[-20px]'>
                     <form onSubmit={addTodo} className='flex justify-center'>
                         <input value={text} onChange={(e) => { setText(e.target.value) }} type="text" className='w-[30%] p-3 text-white outline-none bg-gray-700' placeholder='Create a new todo' required />
@@ -46,6 +69,7 @@ const Home = () => {
                     </form>
                 </div>
 
+                {/* Todo List Section */}
                 <div className='flex justify-center mt-10 pb-10'>
 
                     <div className='w-[34%] bg-gray-700'>

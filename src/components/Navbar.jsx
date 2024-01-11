@@ -1,15 +1,33 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import userIcon from '../assets/user-icon.png'
+import { auth } from './config/config';
+import { signOut } from "firebase/auth";
+
 
 const Navbar = () => {
+
+    const navigate = useNavigate()
+
+    function userLogout() {
+
+        signOut(auth).then(() => {
+            navigate('login')
+        }).catch((error) => {
+            console.log(error);
+        });
+
+    }
+
     return (
         <>
             {/* Hero Section Start */}
             <nav id='hero' >
                 {/* Logo */}
                 < div >
-                    <h1 className="text-white text-[30px] font-bold"> <a href="/"> myTodo </a> </h1>
+                    <Link to="/">
+                        <h1 className="text-white text-[30px] font-bold"> myTodo </h1>
+                    </Link>
                 </div >
 
 
@@ -36,9 +54,7 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/">
-                                    <button> Log Out </button>
-                                </Link>
+                                <button onClick={userLogout}> Log Out </button>
                             </li>
                         </ul>
                     </div>
