@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../components/config/config'
+import { auth } from '../config/config'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = () => {
@@ -20,9 +20,9 @@ const Register = () => {
         const password = passwordRef.current.value
         const confPassword = confPasswordRef.current.value
 
-        console.log(email)
-        console.log(password)
-        console.log(confPassword)
+        // console.log(email)
+        // console.log(password)
+        // console.log(confPassword)
 
 
         // Checking Password Same or Not
@@ -32,7 +32,7 @@ const Register = () => {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    console.log(user);
+                    // console.log(user);
                     emailRef.current.value = ""
                     passwordRef.current.value = ""
                     confPasswordRef.current.value = ""

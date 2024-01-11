@@ -1,5 +1,5 @@
 import React from 'react'
-import RouterConfig from './components/config/RouterConfig'
+import RouterConfig from './config/RouterConfig'
 
 function App() {
 

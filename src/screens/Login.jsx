@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../components/config/config'
+import { auth } from '../config/config'
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 
@@ -19,14 +19,14 @@ const Login = () => {
         const email = emailRef.current.value
         const password = passwordRef.current.value
 
-        console.log(email)
-        console.log(password)
+        // console.log(email)
+        // console.log(password)
 
         // User Login Function
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                console.log(user);
+                // console.log(user);
                 emailRef.current.value = ""
                 passwordRef.current.value = ""
                 navigate('/')

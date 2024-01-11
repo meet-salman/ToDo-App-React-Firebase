@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { auth } from '../components/config/config'
-import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../config/config'
+import { onAuthStateChanged } from "firebase/auth";
+import { db } from '../config/config';
+import { collection, addDoc } from "firebase/firestore";
+
 
 
 const Home = () => {
@@ -10,8 +13,10 @@ const Home = () => {
 
     const [text, setText] = useState("")
     const [todo, setTodo] = useState([])
+    const [logedInUser, setUser] = useState()
 
 
+    // Use Effect
     useEffect(() => {
         userLoginOrLogout()
     }, [])
@@ -21,20 +26,39 @@ const Home = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const uid = user.uid;
-                console.log(user);
+                setUser(user)
+
+                console.log(logedInUser);
             } else {
                 navigate('login')
             }
         });
     }
 
+
     // Add Todo Function
-    function addTodo(e) {
+    async function addTodo(e) {
         e.preventDefault()
 
-        setTodo([...todo, text])
-        setText("")
+        // Todo Add in Firebase
+        try {
+            const docRef = await addDoc(collection(db, "todo"), {
+                task: text,
+                userUid: logedInUser.uid
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+
     }
+
+
+    // setTodo([...todo, text])
+    // setText("")
+
+
 
     // Edit Todo Function
     function editTodo(index) {

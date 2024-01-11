@@ -1,9 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from '../../screens/Home'
-import Navbar from '../navbar'
-import Login from '../../screens/login'
-import Register from '../../screens/register'
+import Home from '../screens/Home'
+import Navbar from '../components/Navbar'
+import Login from '../screens/Login'
+import Register from '../screens/Register'
 
 const RouterConfig = () => {
     return (

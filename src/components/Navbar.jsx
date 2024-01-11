@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import userIcon from '../assets/user-icon.png'
-import { auth } from './config/config';
+import { auth } from '../config/config';
 import { signOut } from "firebase/auth";
 
 
