@@ -7,10 +7,24 @@
 
 * {
     font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
 }
 
 body {
     min-height: 100vh;
     max-height: fit-content;
     background-color: #252525;
+}
+
+
+#hero{
+    display: flex;
+    padding: 0px 100px;
+    height: 200px;
+    justify-content: space-between;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url(https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg?w=826&t=st=1704975927~exp=1704976527~hmac=5ce9fd35f52e5f9ab6cdf2d45d37a2ef1893fa8ec233e82efe67bf0de73669c0);
 }
