@@ -12,7 +12,8 @@ const Register = () => {
     const confPasswordRef = useRef()
 
 
-    function login(e) {
+    // User Register Function
+    function SignUp(e) {
         e.preventDefault()
 
         const email = emailRef.current.value
@@ -53,7 +54,7 @@ const Register = () => {
                     <h3 className="font-bold text-2xl"> Register </h3>
                     <p className="py-4 text-gray-700"> Please Register to add todo's </p>
 
-                    <form onSubmit={login}>
+                    <form onSubmit={SignUp}>
                         <input type="email" ref={emailRef} className='w-full p-3 border-2  outline-none' placeholder='Enter Email' required />
                         <input type="password" ref={passwordRef} className='mt-2 w-full p-3 border-2  outline-none' placeholder='Enter Password' required />
                         <input type="password" ref={confPasswordRef} className='mt-2 w-full p-3 border-2  outline-none' placeholder='Enter Confirm Password' required />
