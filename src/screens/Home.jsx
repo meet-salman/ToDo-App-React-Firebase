@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../config/config'
 import { onAuthStateChanged } from "firebase/auth";
 import { db } from '../config/config';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, doc, addDoc, getDocs, where, query } from "firebase/firestore";
+
 
 
 
@@ -21,6 +22,7 @@ const Home = () => {
         userLoginOrLogout()
     }, [])
 
+    
     // Check Use Login or Logout
     function userLoginOrLogout() {
         onAuthStateChanged(auth, (user) => {
@@ -29,11 +31,28 @@ const Home = () => {
                 setUser(user)
 
                 console.log(logedInUser);
+                // gettingTodo()
             } else {
                 navigate('login')
             }
         });
     }
+
+
+    // Getting Toda Data from Firebase
+    // async function gettingTodo() {
+
+    //     const q = query(collection(db, "todo"), where("userUid", "==", logedInUser.uid));
+    //     const querySnapshot = await getDocs(q);
+
+    //     querySnapshot.forEach((doc) => {
+
+    //         const data = { ...doc.data(), docId: doc.id }
+    //         todo.push(data)
+    //         console.log(todo);
+
+    //     });
+    // }
 
 
     // Add Todo Function
@@ -47,17 +66,15 @@ const Home = () => {
                 userUid: logedInUser.uid
             });
             console.log("Document written with ID: ", docRef.id);
+
+            setTodo([...todo, text])
+            setText("")
         } catch (e) {
             console.error("Error adding document: ", e);
         }
 
 
     }
-
-
-    // setTodo([...todo, text])
-    // setText("")
-
 
 
     // Edit Todo Function
@@ -73,6 +90,7 @@ const Home = () => {
             editTodo(index)
         }
     }
+
 
     // Dlt Todo Function
     function DltTodo(index) {
@@ -98,7 +116,7 @@ const Home = () => {
 
                     <div className='w-[34%] bg-gray-700'>
 
-                        {todo.map((item, index) => {
+                        {todo.length > 0 ? todo.map((item, index) => {
                             return <li key={index} className='flex justify-between p-3 border-b-[1px] border-gray-600 text-white'>
                                 <div className='flex items-center text-lg '>
                                     <i className="fa-solid fa-hand-point-right"></i>  &nbsp; &nbsp; {item}
@@ -115,7 +133,7 @@ const Home = () => {
                                     </button>
                                 </div>
                             </li>
-                        })}
+                        }) : <h1 className='text-center p-3 text-white'> No items to show. </h1>}
 
                     </div>
 
