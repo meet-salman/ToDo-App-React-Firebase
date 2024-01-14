@@ -18,28 +18,31 @@ const Home = () => {
 
 
     // Use Effect
-    useEffect(() => {
-        userLoginOrLogout()
-    }, [])
-
-    
-    // Check Use Login or Logout
-    function userLoginOrLogout() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                setUser(user)
-
-                console.log(logedInUser);
-                // gettingTodo()
-            } else {
-                navigate('login')
-            }
-        });
-    }
+    // useEffect(() => {
+    //     userLoginOrLogout()
+    // }, [])
 
 
-    // Getting Toda Data from Firebase
+    // // Check Use Login or Logout
+    // function userLoginOrLogout() {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             const uid = user.uid;
+
+
+    //             setUser(user)
+
+    //             console.log(logedInUser);
+    //             gettingTodo()
+    //             console.log(todo.length);
+    //         } else {
+    //             navigate('login')
+    //         }
+    //     });
+    // }
+
+
+    // // Getting Toda Data from Firebase
     // async function gettingTodo() {
 
     //     const q = query(collection(db, "todo"), where("userUid", "==", logedInUser.uid));
