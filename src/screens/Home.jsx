@@ -14,27 +14,37 @@ const Home = () => {
 
     const [text, setText] = useState("")
     const [todo, setTodo] = useState([])
-    const [logedInUser, setUser] = useState()
+    const [loggedInUser, setLoggedInUser] = useState();
 
 
     // Use Effect
-    // useEffect(() => {
-    //     userLoginOrLogout()
-    // }, [])
+    useEffect(() => {
+        userLoginOrLogout()
+    }, [])
+
+    // Use Effect
+    useEffect(() => {
+        gettingTodo()
+    }, [loggedInUser])
 
 
     // // Check Use Login or Logout
     // function userLoginOrLogout() {
-    //     onAuthStateChanged(auth, (user) => {
+    //     onAuthStateChanged(auth, async (user) => {
     //         if (user) {
-    //             const uid = user.uid;
 
+    //             setLoggedInUser(user.uid)
 
-    //             setUser(user)
+    //             const q = query(collection(db, "todo"), where("uid", "==", user.uid));
+    //             const querySnapshot = await getDocs(q);
 
-    //             console.log(logedInUser);
-    //             gettingTodo()
-    //             console.log(todo.length);
+    //             querySnapshot.forEach((doc) => {
+
+    //                 const data = { ...doc.data() }
+    //                 todo.push(data)
+    //             });
+    //             console.log(todo);
+
     //         } else {
     //             navigate('login')
     //         }
@@ -42,20 +52,56 @@ const Home = () => {
     // }
 
 
-    // // Getting Toda Data from Firebase
-    // async function gettingTodo() {
 
-    //     const q = query(collection(db, "todo"), where("userUid", "==", logedInUser.uid));
-    //     const querySnapshot = await getDocs(q);
 
-    //     querySnapshot.forEach((doc) => {
 
-    //         const data = { ...doc.data(), docId: doc.id }
-    //         todo.push(data)
-    //         console.log(todo);
 
-    //     });
-    // }
+
+
+
+
+
+
+    // Check Use Login or Logout
+    function userLoginOrLogout() {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+
+                const q = query(collection(db, "users"), where("uid", "==", user.uid));
+
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+
+                    setLoggedInUser(doc.data())
+                    console.log(loggedInUser);
+
+                });
+
+            } else {
+                navigate('login')
+            }
+        });
+    }
+
+
+    // Getting Toda Data from Firebase
+    async function gettingTodo() {
+        setTodo([])
+
+        const q = query(collection(db, "todo"), where("uid", "==", loggedInUser.uid));
+        const querySnapshot = await getDocs(q);
+
+        const todoData = []
+
+        querySnapshot.forEach((doc) => {
+
+            const data = { ...doc.data(), docId: doc.id }
+            // todo.push(data)
+            todoData.push(data)
+            console.log(todoData);
+            setTodo(todoData)
+        });
+    }
 
 
     // Add Todo Function
@@ -66,17 +112,16 @@ const Home = () => {
         try {
             const docRef = await addDoc(collection(db, "todo"), {
                 task: text,
-                userUid: logedInUser.uid
+                uid: loggedInUser.uid
             });
             console.log("Document written with ID: ", docRef.id);
 
-            setTodo([...todo, text])
+            // setTodo([...todo, text])
             setText("")
+            gettingTodo()
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-
-
     }
 
 
@@ -101,6 +146,8 @@ const Home = () => {
         setTodo([...todo])
     }
 
+
+
     return (
         <>
             {/* Todo Section Start */}
@@ -122,7 +169,7 @@ const Home = () => {
                         {todo.length > 0 ? todo.map((item, index) => {
                             return <li key={index} className='flex justify-between p-3 border-b-[1px] border-gray-600 text-white'>
                                 <div className='flex items-center text-lg '>
-                                    <i className="fa-solid fa-hand-point-right"></i>  &nbsp; &nbsp; {item}
+                                    <i className="fa-solid fa-hand-point-right"></i>  &nbsp; &nbsp; {item.task}
                                 </div>
                                 <div>
                                     <button onClick={() => editTodo(index)}>

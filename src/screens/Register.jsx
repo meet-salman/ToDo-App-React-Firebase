@@ -23,13 +23,6 @@ const Register = () => {
         const email = emailRef.current.value
         const password = passwordRef.current.value
         const confPassword = confPasswordRef.current.value
-
-        const userData = {
-            name: name,
-            email: email
-        }
-
-        // console.log(userData);
         
 
         // Checking Password Same or Not
@@ -41,6 +34,11 @@ const Register = () => {
                     const user = userCredential.user;
                     // console.log(user);
 
+                    const userData = {
+                        name: name,
+                        email: email,
+                        uid: user.uid
+                    }
 
                     addDoc(collection(db, "users"), userData)
                         .then(() => {
