@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../config/config'
 import { onAuthStateChanged } from "firebase/auth";
 import { db } from '../config/config';
-import { collection, doc, addDoc, getDocs, where, query } from "firebase/firestore";
+import { collection, doc, addDoc, getDocs, updateDoc, deleteDoc, where, query } from "firebase/firestore";
 
 
 
@@ -112,7 +112,8 @@ const Home = () => {
         try {
             const docRef = await addDoc(collection(db, "todo"), {
                 task: text,
-                uid: loggedInUser.uid
+                uid: loggedInUser.uid,
+                status: 'pending'
             });
             console.log("Document written with ID: ", docRef.id);
 
@@ -126,12 +127,21 @@ const Home = () => {
 
 
     // Edit Todo Function
-    function editTodo(index) {
+    async function editTodo(index) {
         const editedValue = prompt('Enter Edited Todo Value')
 
         if (editedValue !== "") {
-            todo[index] = editedValue
-            setTodo([...todo])
+
+            const docRef = doc(db, 'todo', todo[index].docId)
+
+            await updateDoc(docRef, { task: editedValue })
+                .then(() => {
+                    todo[index].task = editedValue
+                    setTodo([...todo])
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
         else {
             alert("Please Enter a Value")
@@ -141,9 +151,16 @@ const Home = () => {
 
 
     // Dlt Todo Function
-    function DltTodo(index) {
-        todo.splice(index, 1)
-        setTodo([...todo])
+    async function DltTodo(index) {
+
+        await deleteDoc(doc(db, "todo", todo[index].docId))
+            .then(() => {
+                todo.splice(index, 1)
+                setTodo([...todo])
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 
