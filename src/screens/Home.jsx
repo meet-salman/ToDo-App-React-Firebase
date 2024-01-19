@@ -147,7 +147,7 @@ const Home = () => {
 
                         {todo.length > 0 ? todo.map((item, index) => {
                             return <TodoList key={item.docId} index={index} task={item.task} editTodo={editTodo} dltTodo={() => dltTodo(index)} />
-                        }) : <h1 className='text-center p-3 text-white'> No items to show. </h1>}
+                        }) : <h1 className='text-center p-3 text-white'> No todos to show. </h1>}
 
                     </div>
 
