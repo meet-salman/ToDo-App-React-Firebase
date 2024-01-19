@@ -97,27 +97,6 @@ const Home = () => {
 
     // Edit Todo Function
     async function editTodo(index, editedTodoVal) {
-        // const editedValue = prompt('Enter Edited Todo Value')
-
-        // if (editedValue !== "") {
-
-        //     const docRef = doc(db, 'todo', todo[index].docId)
-
-        //     await updateDoc(docRef, { task: editedValue })
-        //         .then(() => {
-        //             todo[index].task = editedValue
-        //             setTodo([...todo])
-        //         })
-        //         .catch((err) => {
-        //             console.log(err);
-        //         })
-        // }
-        // else {
-        //     alert("Please Enter a Value")
-        //     editTodo(index)
-        // }
-
-        console.log(`${index} => ${editedTodoVal}`);
 
         const updatedTodo = doc(db, "todo", todo[index].docId);
         updateDoc(updatedTodo, {
@@ -134,7 +113,7 @@ const Home = () => {
 
 
     // Dlt Todo Function
-    async function DltTodo(index) {
+    async function dltTodo(index) {
 
         await deleteDoc(doc(db, "todo", todo[index].docId))
             .then(() => {
@@ -167,7 +146,7 @@ const Home = () => {
                     <div className='w-[34%] bg-gray-700'>
 
                         {todo.length > 0 ? todo.map((item, index) => {
-                            return <TodoList key={item.docId} index={index} task={item.task} editTodo={editTodo} />
+                            return <TodoList key={item.docId} index={index} task={item.task} editTodo={editTodo} dltTodo={() => dltTodo(index)} />
                         }) : <h1 className='text-center p-3 text-white'> No items to show. </h1>}
 
                     </div>

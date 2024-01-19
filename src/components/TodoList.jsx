@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react'
 
-const TodoList = ({ index, task, editTodo }) => {
+const TodoList = ({ index, task, editTodo, dltTodo }) => {
 
     const [showTodo, setShowTodo] = useState(true);
 
     const editedTodoVal = useRef()
 
+    // Saving Edited Todo Value
     const saveEditedTodo = () => {
         editTodo(index, editedTodoVal.current.value)
         setShowTodo(true)
-
     }
 
     return (
@@ -26,7 +26,7 @@ const TodoList = ({ index, task, editTodo }) => {
                         {/* <button>
                             <i className="fa-solid fa-check mr-3 p-2 text-[10px] text-green-500 border-[1px] border-green-500 rounded-full"></i>
                         </button> */}
-                        <button onClick={() => DltTodo()}>
+                        <button onClick={dltTodo}>
                             <i className="fa-solid fa-trash p-2 text-[10px] text-red-400 border-[1px] border-red-400 rounded-full"></i>
                         </button>
                     </div>
