@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../config/config'
 import { onAuthStateChanged } from "firebase/auth";
 import { db } from '../config/config';
 import { collection, doc, addDoc, getDocs, updateDoc, deleteDoc, where, query } from "firebase/firestore";
+import TodoList from '../components/TodoList';
 
 
 
@@ -15,7 +16,8 @@ const Home = () => {
     const [text, setText] = useState("")
     const [todo, setTodo] = useState([])
     const [loggedInUser, setLoggedInUser] = useState();
-    const [showTodo, setShowTodo] = useState(true);
+
+    const editValRef = useRef()
 
 
     // Use Effect
@@ -94,7 +96,7 @@ const Home = () => {
 
 
     // Edit Todo Function
-    async function editTodo(index) {
+    async function editTodo(index, editedTodoVal) {
         // const editedValue = prompt('Enter Edited Todo Value')
 
         // if (editedValue !== "") {
@@ -115,7 +117,19 @@ const Home = () => {
         //     editTodo(index)
         // }
 
-        setShowTodo(true)
+        console.log(`${index} => ${editedTodoVal}`);
+
+        const updatedTodo = doc(db, "todo", todo[index].docId);
+        updateDoc(updatedTodo, {
+            task: editedTodoVal
+        })
+            .then(() => {
+                todo[index].task = editedTodoVal
+                setTodo([...todo])
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 
@@ -152,32 +166,9 @@ const Home = () => {
 
                     <div className='w-[34%] bg-gray-700'>
 
-                        {showTodo ? todo.length > 0 ? todo.map((item, index) => {
-                            return <li key={index} className='flex justify-between p-3 border-b-[1px] border-gray-600 text-white'>
-                                <div className='flex items-center text-lg '>
-                                    <i className="fa-solid fa-hand-point-right"></i>  &nbsp; &nbsp; {item.task}
-                                </div>
-                                <div>
-                                    <button onClick={() => setShowTodo(false)}>
-                                        <i className="fa-solid fa-pencil mr-3 p-2 text-[10px] text-blue-400 border-[1px] border-blue-400 rounded-full"></i>
-                                    </button>
-                                    <button>
-                                        <i className="fa-solid fa-check mr-3 p-2 text-[10px] text-green-500 border-[1px] border-green-500 rounded-full"></i>
-                                    </button>
-                                    <button onClick={() => DltTodo(index)}>
-                                        <i className="fa-solid fa-trash p-2 text-[10px] text-red-400 border-[1px] border-red-400 rounded-full"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        }) : <h1 className='text-center p-3 text-white'> No items to show. </h1> : <div>
-
-                            <form onSubmit={editTodo} className='flex justify-between p-3 border-b-[1px] border-gray-600 text-white'>
-                                <input type="text" placeholder='Enter Edited Value' className='bg-gray-700 outline-none ' />
-                                <button type='submit'>
-                                    <i className="fa-solid fa-arrow-right p-2 text-[10px] text-blue-400 border-[1px] border-blue-400 rounded-full"></i>
-                                </button>
-                            </form>
-                        </div>}
+                        {todo.length > 0 ? todo.map((item, index) => {
+                            return <TodoList key={item.docId} index={index} task={item.task} editTodo={editTodo} />
+                        }) : <h1 className='text-center p-3 text-white'> No items to show. </h1>}
 
                     </div>
 
